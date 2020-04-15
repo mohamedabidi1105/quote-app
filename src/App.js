@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
+import axios from 'axios'
+
 import QuoteCard from './components/QuoteCard'
-import logo from './logo.svg';
+
 import './App.css';
 
 const samplePerson = {
@@ -11,24 +13,28 @@ const samplePerson = {
 }
 
 class App extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      person: samplePerson
+      character: samplePerson
     }
-
+    this.getPerson = this.getPerson.bind(this)
+  }
     getPerson() {
       axios
-      .get('')
-      .then()
-      .then()
+      .get('https://thesimpsonsquoteapi.glitch.me/quotes')
+      .then(response => response.data)
+      .then(data => {
+        this.setState({character: data[0]})
+      })
     }
-  }
+  
   render() {
   return (
     <div className="App">
 
-      <QuoteCard person={samplePerson} />
+      <QuoteCard character={this.state.character} />
+      <button className="button" onClick={this.getPerson}>Another Quote</button>
 
     </div>
 
